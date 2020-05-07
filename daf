@@ -1,0 +1,12 @@
+#!/bin/sh
+
+target=$1
+size=$2
+token=$3
+
+url_users="https://discord.com/api/v6/users/"
+url_avatars="https://cdn.discordapp.com/avatars/"
+
+user=$(curl --silent -H "Authorization: $token" $url_users$target)
+avatar_hash=$(echo $user | awk -F \" '/avatar/ {printf($12)}')
+curl --silent "$url_avatars$target/$avatar_hash.png?size=$(( 4096 >> $size ))"
